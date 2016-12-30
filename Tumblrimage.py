@@ -24,8 +24,6 @@ def getPostname(posturl):
 
 def getImg(url):
 	html = getHtml(url)
-	global Number
-	imglist_none = []
 
 	reg = r'<meta property="og:image" content="(http://68.media.tumblr.com/.*?\.jpg)" />'
 	imgre = re.compile(reg)
