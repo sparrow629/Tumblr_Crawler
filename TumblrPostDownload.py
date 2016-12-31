@@ -2,11 +2,17 @@ import re
 import urllib.request
 import Tumblrimage
 import TumblrVideo
+import traceback
 
 def getHtml(url):
-	page = urllib.request.urlopen(url)
-	html = page.read().decode('utf-8')
-	return html
+    try:
+        page = urllib.request.urlopen(url)
+        html = page.read().decode('utf-8')
+        return html
+    except:
+        # traceback.print_exc()
+        print('The URL you requested could not be found')
+        return 'Html'
 
 def vedio_image_judge(url):
     html = getHtml(url)
@@ -15,7 +21,7 @@ def vedio_image_judge(url):
     type =re.findall(typere, html)
     if type:
         print('This is %s' % type[0])
-        return type
+        return type[0]
     else:
         return False
 

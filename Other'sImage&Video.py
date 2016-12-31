@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 from threading import Thread
-import Queue
+import queue
 import requests
 import re
 import os
@@ -9,7 +9,7 @@ import time
 
 
 api_url='http://%s.tumblr.com/api/read?&num=50&start='
-UQueue=Queue.Queue()
+UQueue=queue.Queue()
 def getpost(uid,queue):
     url='http://%s.tumblr.com/api/read?&num=50'%uid
     page=requests.get(url).content
@@ -38,14 +38,14 @@ class Consumer(Thread):
         session = requests.Session()
         while 1:
             link = self.queue.get()
-            print 'start parse post: ' + link
+            print('start parse post: ' + link)
             try:
                 content = session.get(link).content
                 videos = extractvideore.findall(content)
                 video_links.extend([vhead % v for v in videos])
                 pic_links.extend(extractpicre.findall(content))
             except:
-                print 'url: %s parse failed\n' % link
+                print('url: %s parse failed\n' % link)
             if self.queue.empty():
                 break
 

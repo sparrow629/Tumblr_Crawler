@@ -5,9 +5,14 @@ import urllib.request
 import os
 
 def getHtml(url):
-	page = urllib.request.urlopen(url)
-	html = page.read().decode('utf-8')
-	return html
+    try:
+        page = urllib.request.urlopen(url)
+        html = page.read().decode('utf-8')
+        return html
+    except:
+        # traceback.print_exc()
+        print('The URL you requested could not be found')
+        return 'Html'
 
 def getPostname(posturl):
 	reg = r'http://.*?\/post\/(.*)'
@@ -23,7 +28,7 @@ def getPostname(posturl):
 def getImg(url):
 	html = getHtml(url)
 
-	reg = r'<meta property="og:image" content="(http://68.media.tumblr.com/.*?\.(jpg|gif))" />'
+	reg = r'<meta property="og:image" content="(http://68.media.tumblr.com/.*?\.(jpg|gif|png))" />'
 	imgre = re.compile(reg)
 	imglist_none = re.findall(imgre, html)
 	imglist = list(set(imglist_none))
@@ -48,7 +53,10 @@ def getImg(url):
 			target = path + '%s.%s' % (Name,Postfix)
 			i += 1
 			print("Downloading %s " % target)
-			urllib.request.urlretrieve(imgurl, target)
+			try:
+				urllib.request.urlretrieve(imgurl, target)
+			except:
+				print('The image is lost.')
 		return True
 
 	else:

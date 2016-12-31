@@ -3,11 +3,17 @@ import multiprocessing
 import re
 import urllib.request
 import os
+import traceback
 
 def getHtml(url):
-	page = urllib.request.urlopen(url)
-	html = page.read().decode('utf-8')
-	return html
+    try:
+        page = urllib.request.urlopen(url)
+        html = page.read().decode('utf-8')
+        return html
+    except:
+        # traceback.print_exc()
+        print('The URL you requested could not be found')
+        return 'Html'
 
 def getPostname(posturl):
 	reg = r'http://.*?\/post\/(.*)'
@@ -45,7 +51,11 @@ def getMP4(url):
         target = path + '%s.mp4' % Name
 
         print("Downloading %s " % target)
-        urllib.request.urlretrieve(videourl, target)
+        try:
+            urllib.request.urlretrieve(videourl, target)
+        except:
+            # traceback.print_exc()
+            print('The video is deleted or not found.')
         return True
 
     else:
