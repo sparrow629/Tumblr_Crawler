@@ -1,8 +1,9 @@
 # Tumblr_Crawler
-This is a multi-threade crawler for Tumblr.
-These are two crawler module for video and image. The main file is Crawler.
+This is a multi-threade crawler for Tumblr. Able to download entire blog or any post that you like.
 
+There are two crawler module for video and image. 
 One is for video, another is for image including GIF.
+The main file is Crawler.
 
 #update2.0 for download any Post
 This version of TumblrCrawler combine video and image including GIF in
@@ -26,7 +27,7 @@ Develope under Python3.5 with some basic packages, such as requests.
 
 #Run
 Run the TumblrCrawler.py directly.
-##The input could be the blog's url, such as "http://.*?.tumblr.com/"
-##Or any single post that you like.
+The input could be the blog's url, such as "http://.*?.tumblr.com/"
+Or any single post that you like.
 
 Finally, Enjoy your Interested and Excited Dowload! :)
