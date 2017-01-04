@@ -12,6 +12,7 @@ import TumblrPostDownload
 import TumblrVideo
 import Tumblrimage
 import time
+import traceback
 
 
 def getHtml(url):
@@ -64,19 +65,23 @@ def FindPage(Homeurl):
         return PageList
     else:
         print('There is only one page.')
-        return False
+        return PageList
 
 def FindAllthePostUrl(url):
     PageList = FindPage(url)
-    Pagenum = len(PageList)
-    PostUrlLists = {}
 
-    for page in range(1,Pagenum+1):
-        PostUrlLists[page] = FindCurrentPagePostUrl(PageList[page])
-        print(page,PostUrlLists[page],sep='')
+    if PageList:
+        Pagenum = len(PageList)
+        PostUrlLists = {}
+        for page in range(1,Pagenum+1):
+            PostUrlLists[page] = FindCurrentPagePostUrl(PageList[page])
+            print(page,PostUrlLists[page],sep='')
 
-    print(PostUrlLists)
-    return PostUrlLists
+        print(PostUrlLists)
+        return PostUrlLists
+    else:
+        print('There is no page!')
+        return False
 
 class ThreadTask(threading.Thread):
 
@@ -96,36 +101,43 @@ class ThreadTask(threading.Thread):
 def DownloadAllthepsot(url):
     Task = []
     PostUrlLists = FindAllthePostUrl(url)
-    PageNum = len(PostUrlLists)
-    print(PageNum)
-    for pageNum in range(1,PageNum+1):
-        task = ThreadTask(PostUrlLists[pageNum])
-        Task.append(task)
-        print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
+    if PostUrlLists:
+        PageNum = len(PostUrlLists)
+        print(PageNum)
+        for pageNum in range(1,PageNum+1):
+            task = ThreadTask(PostUrlLists[pageNum])
+            Task.append(task)
+            print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
 
-    for task in Task:
-        task.setDaemon(True)
-        task.start()
-        print(time.ctime(),'thread %s start' % task)
-    for task in Task:
-        task.join()
-    while 1:
         for task in Task:
-            if task.is_alive():
-                continue
-            else:
-                Task.remove(task)
-                print(time.ctime(),'thread %s is finished' % task)
-        if len(Task) == 0:
-            break
+            task.setDaemon(True)
+            task.start()
+            print(time.ctime(),'thread %s start' % task)
+        for task in Task:
+            task.join()
+        while 1:
+            for task in Task:
+                if task.is_alive():
+                    continue
+                else:
+                    Task.remove(task)
+                    print(time.ctime(),'thread %s is finished' % task)
+            if len(Task) == 0:
+                break
 
 
 if __name__ == '__main__':
     select = 'N'
+    reg = r'http://.*?.tumblr.com/.*'
     while not(select == 'Y'):
         URL = input('Input url: ')
-        DownloadAllthepsot(URL)
-        # FindAllthePostUrl(URL)
+        if re.match(reg,URL):
+            try:
+                DownloadAllthepsot(URL)
+            except:
+                traceback.print_exc()
+        else:
+            print('Input wrong format.')
         select = input("Do you want to Quit? [Y/N]")
 
 
