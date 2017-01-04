@@ -1,5 +1,6 @@
 # Tumblr_Crawler
-These are two crawler module for video and image
+This is a multi-threade crawler for Tumblr.
+These are two crawler module for video and image. The main file is Crawler.
 
 One is for video, another is for image including GIF.
 
@@ -10,3 +11,12 @@ is video or photo. Current version is only for download post page
 directly. The whole blog searching function is undergoing. This
 searching will be easy, ignoring the JS. My thoughts is using archive
 page to get all the post pages, then get in every page to download.
+
+#Update3.0
+This version is final one which add crawler whole blog posts function,
+which means this crawler can download all the file, including images
+and video, of one blog once. This crawler uses threading.Thread Module.
+Every 10 posts as a page in tumblr as a single thread one time,
+Multi-thread accelerate whole procession. It needs no cookie can
+crawler any account. Of course, the more post there are, the longer it
+will take to crawler all.
