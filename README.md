@@ -23,7 +23,7 @@ crawler any account. Of course, the more post there are, the longer it
 will take to crawler all.
 
 #Envirment
-Develope under Python3.5 with some basic packages, such as requests. 
+Development under Python3.5 with some basic packages, such as requests. 
 
 #Run
 Run the TumblrCrawler.py directly.
