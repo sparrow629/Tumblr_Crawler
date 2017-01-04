@@ -1,4 +1,4 @@
-#coding:utf-8
+# -*- coding: utf-8 -*-
 import multiprocessing
 import re
 import urllib.request
@@ -12,7 +12,7 @@ def getHtml(url):
         return html
     except:
         # traceback.print_exc()
-        print('The URL you requested could not be found')
+        print('The URL you requested could not be found in Module Video')
         return 'Html'
 
 def getPostname(posturl):

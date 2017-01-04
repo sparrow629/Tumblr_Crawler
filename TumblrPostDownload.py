@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 import re
 import urllib.request
 import Tumblrimage
 import TumblrVideo
 import traceback
+
+
 
 def getHtml(url):
     try:
@@ -10,8 +13,8 @@ def getHtml(url):
         html = page.read().decode('utf-8')
         return html
     except:
-        # traceback.print_exc()
-        print('The URL you requested could not be found')
+        traceback.print_exc()
+        print('The URL you requested could not be found In Module PostDownload')
         return 'Html'
 
 def vedio_image_judge(url):
