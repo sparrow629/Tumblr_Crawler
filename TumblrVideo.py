@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+  Author:  Sparrow
+  Purpose: downloading one entire blog from Tumblr once.
+  Created: 2017-1.1
+"""
 import multiprocessing
 import re
 import urllib.request
