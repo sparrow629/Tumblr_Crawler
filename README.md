@@ -20,3 +20,13 @@ Every 10 posts as a page in tumblr as a single thread one time,
 Multi-thread accelerate whole procession. It needs no cookie can
 crawler any account. Of course, the more post there are, the longer it
 will take to crawler all.
+
+#Envirment
+Develope under Python3.5 with some basic packages, such as requests. 
+
+#Run
+Run the TumblrCrawler.py directly.
+##The input could be the blog's url, such as "http://.*?.tumblr.com/"
+##Or any single post that you like.
+
+Finally, Enjoy your Interested and Excited Dowload! :)
