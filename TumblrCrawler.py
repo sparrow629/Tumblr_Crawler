@@ -13,6 +13,8 @@ import TumblrVideo
 import Tumblrimage
 import time
 import traceback
+import PersonalThemeSearch
+import ArchiveSearch
 
 
 def getHtml(url):
@@ -25,14 +27,20 @@ def getHtml(url):
         print('The URL you requested could not be found')
         return 'Html'
 
-def reCodeURL(string):
-    url = 'http://' + urllib.request.quote(string)
-    print(string, '=>', url)
-    return url
+def reCodeURL(url):
+    reg = '(.*?/post/.*?)/.*'
+    urlre = re.compile(reg)
+    try:
+        newnurl = re.findall(urlre, url)[0]
+        print(url,'=>',newnurl)
+        return newnurl
+    except:
+        print(url,'=>')
+        return url
 
 def FindCurrentPagePostUrl(url):
     html = getHtml(url)
-    reg = r'<a href="http://(.*?)" title=".*?" class="meta-item post-date">'
+    reg = r'<a href="(.*?)" title=".*?" class="meta-item post-date">'
     PostUrlre = re.compile(reg)
     PostUrlString = re.findall(PostUrlre, html)
 
@@ -44,7 +52,6 @@ def FindCurrentPagePostUrl(url):
         # print(PostUrl)
         return PostUrl
     else:
-        print("There is no post!")
         return False
 
 def FindPage(Homeurl):
@@ -74,11 +81,16 @@ def FindAllthePostUrl(url):
         Pagenum = len(PageList)
         PostUrlLists = {}
         for page in range(1,Pagenum+1):
-            PostUrlLists[page] = FindCurrentPagePostUrl(PageList[page])
-            print(page,PostUrlLists[page],sep='')
+            Posturl = FindCurrentPagePostUrl(PageList[page])
+            if Posturl:
+                PostUrlLists[page] = Posturl
+                print(page, PostUrlLists[page], sep=' ')
+            else:
+                print("There is no post in page %s!" % page)
 
-        print(PostUrlLists)
+        print(PostUrlLists,'mark')
         return PostUrlLists
+
     else:
         print('There is no page!')
         return False
@@ -100,7 +112,14 @@ class ThreadTask(threading.Thread):
 
 def DownloadAllthepsot(url):
     Task = []
-    PostUrlLists = FindAllthePostUrl(url)
+    DefaultStyle = PersonalThemeSearch.BlogStyleDetection(url)
+    # DefaultStyle = True
+
+    if DefaultStyle:
+        PostUrlLists = FindAllthePostUrl(url)
+    else:
+        PostUrlLists = ArchiveSearch.findalltheposturl(url)
+
     if PostUrlLists:
         PageNum = len(PostUrlLists)
         print(PageNum)
@@ -128,12 +147,16 @@ def DownloadAllthepsot(url):
 
 if __name__ == '__main__':
     select = 'N'
-    reg = r'http://.*?.tumblr.com/.*'
+    reg = r'(http|https)://.*?'
     while not(select == 'Y'):
         URL = input('Input url: ')
         if re.match(reg,URL):
             try:
+                start = time.time()
+                # FindAllthePostUrl(URL)
                 DownloadAllthepsot(URL)
+                end = time.time()
+                print(start,end,'=> Cost %ss' % (end-start))
             except:
                 traceback.print_exc()
         else:
