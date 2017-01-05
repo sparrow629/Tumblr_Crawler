@@ -144,6 +144,16 @@ def DownloadAllthepsot(url):
             if len(Task) == 0:
                 break
 
+def Main_Post_URLDiscrimination(url):
+    post_reg = r'(.*?/post/.*?/*.*)'
+    post_re = re.compile(post_reg)
+    post_discrimination = re.findall(post_re, url)
+    if post_discrimination:
+        print('A Post page!')
+        return False
+    else:
+        print('This is Main page!')
+        return True
 
 if __name__ == '__main__':
     select = 'N'
@@ -152,9 +162,12 @@ if __name__ == '__main__':
         URL = input('Input url: ')
         if re.match(reg,URL):
             try:
+                discrimination = Main_Post_URLDiscrimination(URL)
                 start = time.time()
-                # FindAllthePostUrl(URL)
-                DownloadAllthepsot(URL)
+                if discrimination:
+                    DownloadAllthepsot(URL)
+                else:
+                    TumblrPostDownload.PostDownload(URL)
                 end = time.time()
                 print(start,end,'=> Cost %ss' % (end-start))
             except:

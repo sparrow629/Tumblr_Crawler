@@ -45,7 +45,7 @@ def findAllPage(url):
     return PageList
 
 def reCodeURL(url):
-    reg = '(.*?/post/.*?)/.*'
+    reg = '(.*?/post/.*)/.*'
     urlre = re.compile(reg)
     try:
         newnurl = re.findall(urlre, url)[0]
@@ -99,6 +99,7 @@ if __name__ == '__main__':
 
         start = time.time()
         findalltheposturl(URL)
+        # reCodeURL(URL)
         end = time.time()
         print(start, end, '=> Cost %ss' % (end - start))
 

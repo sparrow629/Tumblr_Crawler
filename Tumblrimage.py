@@ -34,7 +34,7 @@ def getPostname(posturl):
 def getImg(url):
 	html = getHtml(url)
 
-	reg = r'<meta property="og:image" content="(http://68.media.tumblr.com/.*?\.(jpg|gif|png))" />'
+	reg = r'<meta property="og:image" content="(https*://68.media.tumblr.com/.*?\.(jpg|gif|png))" />'
 	imgre = re.compile(reg)
 	imglist_none = re.findall(imgre, html)
 	imglist = list(set(imglist_none))
