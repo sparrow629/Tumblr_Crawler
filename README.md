@@ -31,7 +31,7 @@ ArchiveSearch.py is the Module for crawling all the post url in Archive page, ev
 
 This version only figure out that searching all the post in every kind of stylesheet blog. It need to be solved to design a more universal function to crawl personal template post’s content.
 
-What’s more, this version fix some exception in none post page and a little logical problem.
+What’s more, this version fixes some exception in none post page and a little logical problem.
 
 #Envirment
 Development under Python3.5 with some basic packages, such as requests. 
