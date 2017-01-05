@@ -21,7 +21,7 @@ def getHtml(url):
         return 'Html'
 
 def getPostname(posturl):
-	reg = r'http://.*?\/post\/(.*)'
+	reg = r'https*://.*?\/post\/(.*)'
 	postname = re.compile(reg)
 	postnamelist = re.findall(postname, posturl)
 	# print(postnamelist)
