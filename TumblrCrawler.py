@@ -159,6 +159,16 @@ if __name__ == '__main__':
     select = 'N'
     reg = r'(http|https)://.*?'
     while not(select == 'Y'):
+        print('''
+        ---------------------------------
+           Welcome to Tumblr Crawler!
+        ---------------------------------
+        Author:  Sparrow
+        Purpose: downloading images and videos from any Tumblr once.
+        Created: 2017-1.6
+        Version: 5.1
+        Manual: https://github.com/sparrow629/Tumblr_Crawler
+        ''')
         URL = input('Input url: ')
         if re.match(reg,URL):
             try:
