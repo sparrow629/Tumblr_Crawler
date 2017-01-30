@@ -123,26 +123,64 @@ def DownloadAllthepsot(url):
     if PostUrlLists:
         PageNum = len(PostUrlLists)
         print(PageNum)
-        for pageNum in range(1,PageNum+1):
-            task = ThreadTask(PostUrlLists[pageNum])
-            Task.append(task)
-            print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
 
-        for task in Task:
-            task.setDaemon(True)
-            task.start()
-            print(time.ctime(),'thread %s start' % task)
-        for task in Task:
-            task.join()
-        while 1:
+        if PageNum < 1000:
+            for pageNum in range(1,PageNum+1):
+                task = ThreadTask(PostUrlLists[pageNum])
+                Task.append(task)
+                print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
+
             for task in Task:
-                if task.is_alive():
-                    continue
+                task.setDaemon(True)
+                task.start()
+                print(time.ctime(),'thread %s start' % task)
+            for task in Task:
+                task.join()
+            while 1:
+                for task in Task:
+                    if task.is_alive():
+                        continue
+                    else:
+                        Task.remove(task)
+                        print(time.ctime(),'thread %s is finished' % task)
+                if len(Task) == 0:
+                    break
+
+        else:
+            Front = 1
+            Rear = Front + 1000
+            PagingFile = 0
+            while Rear > 0:
+                PagingFile += 1
+                print('*' * 16, "\nThis is Paging File %s From page %s to Page %s." % (PagingFile, Front, Rear), '*' * 16)
+                for pageNum in range(Front, Rear):
+                    task = ThreadTask(PostUrlLists[pageNum])
+                    Task.append(task)
+                    print('-' * 16, '\nThis is thread %s\n' % pageNum, '-' * 16)
+
+                for task in Task:
+                    task.setDaemon(True)
+                    task.start()
+                    print(time.ctime(), 'thread %s start' % task)
+                for task in Task:
+                    task.join()
+                while 1:
+                    for task in Task:
+                        if task.is_alive():
+                            continue
+                        else:
+                            Task.remove(task)
+                            print(time.ctime(), 'thread %s is finished' % task)
+                    if len(Task) == 0:
+                        break
+
+                Rear = PageNum - (Rear - 1) * PagingFile
+                if Rear > 1000:
+                    Front = Front + 1000
+                    Rear = Front +1000
                 else:
-                    Task.remove(task)
-                    print(time.ctime(),'thread %s is finished' % task)
-            if len(Task) == 0:
-                break
+                    Front = Front +1000
+                    Rear = PageNum + 1
 
 def Main_Post_URLDiscrimination(url):
     post_reg = r'(.*?/post/.*?/*.*)'
