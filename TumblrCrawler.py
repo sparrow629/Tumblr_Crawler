@@ -124,7 +124,7 @@ def DownloadAllthepsot(url):
         PageNum = len(PostUrlLists)
         print(PageNum)
 
-        if PageNum < 1000:
+        if PageNum < 500:
             for pageNum in range(1,PageNum+1):
                 task = ThreadTask(PostUrlLists[pageNum])
                 Task.append(task)
@@ -148,11 +148,15 @@ def DownloadAllthepsot(url):
 
         else:
             Front = 1
-            Rear = Front + 1000
-            PagingFile = 0
-            while Rear > 0:
-                PagingFile += 1
-                print('*' * 16, "\nThis is Paging File %s From page %s to Page %s." % (PagingFile, Front, Rear), '*' * 16)
+            gap = 500
+            Rear = Front + gap
+            PagingFile = 1
+            LAST = False
+            while Rear > 0 and Rear <= PageNum + 1 and LAST == False:
+                if Rear == PageNum + 1:
+                    LAST = True
+
+                print('*' * 16, "\nThis is Paging File %s From page %s to Page %s.\n" % (PagingFile, Front, Rear-1), '*' * 16)
                 for pageNum in range(Front, Rear):
                     task = ThreadTask(PostUrlLists[pageNum])
                     Task.append(task)
@@ -174,12 +178,13 @@ def DownloadAllthepsot(url):
                     if len(Task) == 0:
                         break
 
-                Rear = PageNum - (Rear - 1) * PagingFile
-                if Rear > 1000:
-                    Front = Front + 1000
-                    Rear = Front +1000
+                Rear = PageNum - gap * PagingFile
+                if Rear > gap:
+                    Front = Front + gap
+                    Rear = Front +gap
+                    PagingFile += 1
                 else:
-                    Front = Front +1000
+                    Front = Front +gap
                     Rear = PageNum + 1
 
 def Main_Post_URLDiscrimination(url):
