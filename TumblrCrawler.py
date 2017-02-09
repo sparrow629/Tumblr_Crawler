@@ -151,8 +151,8 @@ def DownloadAllthepsot(url):
             Front = 1
             Rear = Front + gap
             PagingFile = 1
-            LAST = False
-            while Rear > 0 and Rear <= PageNum + 1 and LAST == False:
+
+            while Rear > 0 and Rear <= PageNum + 1:
                 if Rear == PageNum + 1:
                     LAST = True
 
@@ -228,5 +228,3 @@ if __name__ == '__main__':
         else:
             print('Input wrong format.')
         select = input("Do you want to Quit? [Y/N]")
-
-
