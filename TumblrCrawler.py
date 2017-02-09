@@ -123,8 +123,9 @@ def DownloadAllthepsot(url):
     if PostUrlLists:
         PageNum = len(PostUrlLists)
         print(PageNum)
+        gap = 500
 
-        if PageNum < 500:
+        if PageNum < gap:
             for pageNum in range(1,PageNum+1):
                 task = ThreadTask(PostUrlLists[pageNum])
                 Task.append(task)
@@ -148,7 +149,6 @@ def DownloadAllthepsot(url):
 
         else:
             Front = 1
-            gap = 500
             Rear = Front + gap
             PagingFile = 1
             LAST = False
@@ -209,7 +209,7 @@ if __name__ == '__main__':
         Author:  Sparrow
         Purpose: downloading images and videos from any Tumblr once.
         Created: 2017-1.6
-        Version: 5.1
+        Version: 5.4
         Manual: https://github.com/sparrow629/Tumblr_Crawler
         ''')
         URL = input('Input url: ')
