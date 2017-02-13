@@ -73,7 +73,14 @@ def FindAllthePostUrl(url):
             Posturl = FindCurrentPagePostUrl(PageList[page])
             if Posturl:
                 PostUrlLists[page] = Posturl
-                print(page, PostUrlLists[page], sep=' ')
+                try:
+                    print(page,PostUrlLists[page],sep=' ')
+                except:
+                    num = len(PostUrlLists[page])
+                    for i in range(num):
+                        url = PostUrlLists[page][i]
+                        PostUrlLists[page][i] = url.encode('gbk', 'ignore').decode('gbk')
+
             else:
                 print("There is no post in page %s!" % page)
 

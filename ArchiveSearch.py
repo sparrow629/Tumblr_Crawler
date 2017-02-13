@@ -55,6 +55,7 @@ def FindCurrentPagePostUrl(url):
     if PostUrlString:
         PostUrl = []
         for url in PostUrlString:
+            url = url.encode('gbk','ignore').decode('gbk')
             PostUrl.append(url)
         # print(PostUrl)
         return PostUrl
@@ -71,11 +72,18 @@ def findalltheposturl(url):
             Posturl = FindCurrentPagePostUrl(PageList[page])
             if Posturl:
                 PostUrlLists[page] = Posturl
-                print(page,PostUrlLists[page],sep=' ')
+                try:
+                    print(page,PostUrlLists[page],sep=' ')
+                except:
+                    num = len(PostUrlLists[page])
+                    for i in range(num):
+                        url = PostUrlLists[page][i]
+                        PostUrlLists[page][i] = url.encode('gbk', 'ignore').decode('gbk')
+
             else:
                 print("There is no post in page %s!" % page)
 
-        print(PostUrlLists,'mark')
+        # print(PostUrlLists,'mark')
         return PostUrlLists
 
     else:
@@ -93,4 +101,4 @@ if __name__ == '__main__':
         end = time.time()
         print(start, end, '=> Cost %ss' % (end - start))
 
-        select = input("Do you want to Quit? [Y/N]")
+        select = input(" Do you want to Quit? [Y/N]")

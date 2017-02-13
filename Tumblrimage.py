@@ -43,8 +43,11 @@ def getImg(url):
 
 	if imglist:
 		PrePostname = getPostname(url)
-		if len(PrePostname) > 12:
-			Postname = PrePostname[:12]
+		txt = re.search('/', PrePostname)
+		if txt:
+			Postnames = PrePostname.split('/')
+			Postname =Postnames[0]
+			# print(PrePostname,Postnames)
 		else:
 			Postname = PrePostname
 		print(len(imglist))

@@ -46,11 +46,14 @@ def getMP4(url):
         videourl = re.findall(videore, videohtml)[0]
         print(videourl)
 
-        Postname = getPostname(url)
-        if len(Postname) > 12:
-            Name = Postname[:12]
+        PrePostname = getPostname(url)
+        txt = re.search('/', PrePostname)
+        if txt:
+            Postnames = PrePostname.split('/')
+            Name = Postnames[0]
+
         else:
-            Name = Postname
+            Name = PrePostname
         path = 'TumblrMP4download/'
         if not os.path.exists(path):
             os.makedirs(path)
