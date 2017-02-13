@@ -84,7 +84,7 @@ def FindAllthePostUrl(url):
             else:
                 print("There is no post in page %s!" % page)
 
-        print(PostUrlLists,'mark')
+        # print(PostUrlLists,'mark')
         return PostUrlLists
 
     else:

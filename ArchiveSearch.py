@@ -43,7 +43,7 @@ def findAllPage(url):
     PageList = {1:archiveURL}
     PageNum = 1
     findNextpage(archiveURL, archiveURL, PageList, PageNum)
-    print(len(PageList),PageList)
+    print('There is %s pages.' % len(PageList))
     return PageList
 
 def FindCurrentPagePostUrl(url):
