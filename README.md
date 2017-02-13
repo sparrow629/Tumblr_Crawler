@@ -5,6 +5,8 @@ There are two crawler module for video and image.
 One is for video, another is for image including GIF.
 The main file is Crawler.
 
+# Change Log
+
 #update2.0 for download any Post
 This version of TumblrCrawler combine video and image including GIF in
 the same file. What’s more, it can acknowledge whether the main content
@@ -33,10 +35,14 @@ This version only figure out that searching all the post in every kind of styles
 
 What’s more, this version fixes some exception in none post page and a little logical problem about input. There are some spacial cases of url format, like "https://.*?", "http:\/\/wanimal1983.org\/" (WTF? Redirection? http:\/\/wanimal1983.tumblr.com)
 
-#update5.0 Stable version
+#update5.0 
 This may be final version. It fix the problem that can not download content of special stylesheet blogs, and all the problems in last version. It adds the discrimination for homepage or post page, which means that user can download whole blog or specific post.  
 
 The main function is working for  lots of blogs, like special url or theme. Of course, there may be some freak blogs’ stylesheet that is incompatible. You are welcome to remind me if you have some find. :)
+
+#update 5.5 Stable version
+Fix the url decoding problem, then there will be no more 'url not found' problem which can be viewed from the browser.
+
 
 #Envirment
 Development under Python3.5 with some basic packages, such as requests. 
