@@ -8,17 +8,19 @@ import re
 import urllib.request
 import os
 import traceback
+from urllib.parse import quote
 
 
 def getHtml(url):
-    try:
-        page = urllib.request.urlopen(url)
-        html = page.read().decode('utf-8')
-        return html
-    except:
-        # traceback.print_exc()
-        print('The URL you requested could not be found in Module image')
-        return 'Html'
+	url = quote(url, safe='/:?=')
+	try:
+		page = urllib.request.urlopen(url)
+		html = page.read().decode('utf-8')
+		return html
+	except:
+		# traceback.print_exc()
+		print('The URL you requested could not be found in Module image')
+		return 'Html'
 
 def getPostname(posturl):
 	reg = r'https*://.*?\/post\/(.*)'

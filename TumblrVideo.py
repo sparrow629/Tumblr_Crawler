@@ -4,13 +4,14 @@
   Purpose: downloading one entire blog from Tumblr once.
   Created: 2017-1.1
 """
-import multiprocessing
 import re
 import urllib.request
 import os
 import traceback
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')

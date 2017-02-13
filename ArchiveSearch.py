@@ -8,8 +8,10 @@
 import re
 import urllib.request
 import time
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -44,17 +46,6 @@ def findAllPage(url):
     print(len(PageList),PageList)
     return PageList
 
-def reCodeURL(url):
-    reg = '(.*?/post/.*)/.*'
-    urlre = re.compile(reg)
-    try:
-        newnurl = re.findall(urlre, url)[0]
-        print(url,'=>',newnurl)
-        return newnurl
-    except:
-        print(url,'=>')
-        return url
-
 def FindCurrentPagePostUrl(url):
     html = getHtml(url)
     reg = r'<a target="_blank" class="hover" title="" href="(.*?)"'
@@ -64,8 +55,7 @@ def FindCurrentPagePostUrl(url):
     if PostUrlString:
         PostUrl = []
         for url in PostUrlString:
-            Url = reCodeURL(url)
-            PostUrl.append(Url)
+            PostUrl.append(url)
         # print(PostUrl)
         return PostUrl
     else:

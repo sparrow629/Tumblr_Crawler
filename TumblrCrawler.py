@@ -15,9 +15,10 @@ import time
 import traceback
 import PersonalThemeSearch
 import ArchiveSearch
-
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -26,17 +27,6 @@ def getHtml(url):
         # traceback.print_exc()
         print('The URL you requested could not be found')
         return 'Html'
-
-def reCodeURL(url):
-    reg = '(.*?/post/.*?)/.*'
-    urlre = re.compile(reg)
-    try:
-        newnurl = re.findall(urlre, url)[0]
-        print(url,'=>',newnurl)
-        return newnurl
-    except:
-        print(url,'=>')
-        return url
 
 def FindCurrentPagePostUrl(url):
     html = getHtml(url)
@@ -47,8 +37,7 @@ def FindCurrentPagePostUrl(url):
     if PostUrlString:
         PostUrl = []
         for url in PostUrlString:
-            Url = reCodeURL(url)
-            PostUrl.append(Url)
+            PostUrl.append(url)
         # print(PostUrl)
         return PostUrl
     else:
@@ -209,7 +198,7 @@ if __name__ == '__main__':
         Author:  Sparrow
         Purpose: downloading images and videos from any Tumblr once.
         Created: 2017-1.6
-        Version: 5.4
+        Version: 5.5
         Manual: https://github.com/sparrow629/Tumblr_Crawler
         ''')
         URL = input('Input url: ')

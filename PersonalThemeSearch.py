@@ -1,7 +1,9 @@
 import re
 import urllib.request
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
