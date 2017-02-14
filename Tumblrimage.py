@@ -9,6 +9,7 @@ import urllib.request
 import os
 import traceback
 from urllib.parse import quote
+import ExceptionOptions
 
 
 def getHtml(url):
@@ -71,7 +72,8 @@ def getImg(url):
 		return True
 
 	else:
-		print('There is no image!')
+		ExceptionOptions.ImgDownloadException(url)
+		# print('There is no image!')
 		return False
 
 if __name__ == '__main__':

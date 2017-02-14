@@ -205,8 +205,9 @@ if __name__ == '__main__':
         Author:  Sparrow
         Purpose: downloading images and videos from any Tumblr once.
         Created: 2017-1.6
-        Version: 5.5
+        Version: 5.6
         Manual: https://github.com/sparrow629/Tumblr_Crawler
+        署名-非商业使用-禁止演绎 (by-nc-nd)：
         ''')
         URL = input('Input url: ')
         if re.match(reg,URL):
