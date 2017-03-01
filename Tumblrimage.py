@@ -64,7 +64,7 @@ def getImg(url):
 
 			target = path + '%s.%s' % (Name,Postfix)
 			i += 1
-			print("Downloading %s " % target)
+			print("Downloading %s \n" % target)
 			try:
 				urllib.request.urlretrieve(imgurl, target)
 			except:

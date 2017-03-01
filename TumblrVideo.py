@@ -41,7 +41,7 @@ def getMP4(url):
         print(videopageurl[0])
 
         videohtml = getHtml(videopageurl[0])
-        reg_url = r'<source src="(https://www.tumblr.com/video_file/t:.*?)" type="video/mp4">'
+        reg_url = r'<source src="(https://.*?.tumblr.com/video_file/t:.*?)" type="video/mp4">'
         videore = re.compile(reg_url)
         videourl = re.findall(videore, videohtml)[0]
         print(videourl)
