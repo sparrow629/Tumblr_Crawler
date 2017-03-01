@@ -43,6 +43,8 @@ The main function is working for  lots of blogs, like special url or theme. Of c
 #update 5.5 Stable version
 Fix the url decoding problem, then there will be no more 'url not found' problem which can be viewed from the browser.
 
+#update 6.0
+Tumblr update the format of videos' url. So the version before 6.0 may not download the video. I modify the  regular expression.
 
 #Envirment
 Development under Python3.5 with some basic packages, such as requests. 
