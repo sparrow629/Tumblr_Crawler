@@ -15,7 +15,7 @@ def getHtml(url):
 
 def BlogStyleDetection(url):
     html = getHtml(url)
-    reg = 'http://static.tumblr.com/qexbavb/ZpSodrpj0/main-min.css'
+    reg = 'https://secure.static.tumblr.com/szeoxcc/Ms9on6cqn/main-min.css'
     defaultStylere = re.compile(reg)
     detection = re.findall(defaultStylere, html)
 
