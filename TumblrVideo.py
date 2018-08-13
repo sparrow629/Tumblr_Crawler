@@ -4,13 +4,14 @@
   Purpose: downloading one entire blog from Tumblr once.
   Created: 2017-1.1
 """
-import multiprocessing
 import re
 import urllib.request
 import os
 import traceback
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -40,16 +41,19 @@ def getMP4(url):
         print(videopageurl[0])
 
         videohtml = getHtml(videopageurl[0])
-        reg_url = r'<source src="(https://www.tumblr.com/video_file/t:.*?)" type="video/mp4">'
+        reg_url = r'<source src="(https://.*?.tumblr.com/video_file/t:.*?)" type="video/mp4">'
         videore = re.compile(reg_url)
         videourl = re.findall(videore, videohtml)[0]
         print(videourl)
 
-        Postname = getPostname(url)
-        if len(Postname) > 12:
-            Name = Postname[:12]
+        PrePostname = getPostname(url)
+        txt = re.search('/', PrePostname)
+        if txt:
+            Postnames = PrePostname.split('/')
+            Name = Postnames[0]
+
         else:
-            Name = Postname
+            Name = PrePostname
         path = 'TumblrMP4download/'
         if not os.path.exists(path):
             os.makedirs(path)

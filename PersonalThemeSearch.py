@@ -1,7 +1,9 @@
 import re
 import urllib.request
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -13,7 +15,7 @@ def getHtml(url):
 
 def BlogStyleDetection(url):
     html = getHtml(url)
-    reg = 'http://static.tumblr.com/qexbavb/ZpSodrpj0/main-min.css'
+    reg = 'https://secure.static.tumblr.com/szeoxcc/Ms9on6cqn/main-min.css'
     defaultStylere = re.compile(reg)
     detection = re.findall(defaultStylere, html)
 

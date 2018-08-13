@@ -15,9 +15,10 @@ import time
 import traceback
 import PersonalThemeSearch
 import ArchiveSearch
-
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -26,17 +27,6 @@ def getHtml(url):
         # traceback.print_exc()
         print('The URL you requested could not be found')
         return 'Html'
-
-def reCodeURL(url):
-    reg = '(.*?/post/.*?)/.*'
-    urlre = re.compile(reg)
-    try:
-        newnurl = re.findall(urlre, url)[0]
-        print(url,'=>',newnurl)
-        return newnurl
-    except:
-        print(url,'=>')
-        return url
 
 def FindCurrentPagePostUrl(url):
     html = getHtml(url)
@@ -47,8 +37,7 @@ def FindCurrentPagePostUrl(url):
     if PostUrlString:
         PostUrl = []
         for url in PostUrlString:
-            Url = reCodeURL(url)
-            PostUrl.append(Url)
+            PostUrl.append(url)
         # print(PostUrl)
         return PostUrl
     else:
@@ -84,11 +73,18 @@ def FindAllthePostUrl(url):
             Posturl = FindCurrentPagePostUrl(PageList[page])
             if Posturl:
                 PostUrlLists[page] = Posturl
-                print(page, PostUrlLists[page], sep=' ')
+                try:
+                    print(page,PostUrlLists[page],sep=' ')
+                except:
+                    num = len(PostUrlLists[page])
+                    for i in range(num):
+                        url = PostUrlLists[page][i]
+                        PostUrlLists[page][i] = url.encode('gbk', 'ignore').decode('gbk')
+
             else:
                 print("There is no post in page %s!" % page)
 
-        print(PostUrlLists,'mark')
+        # print(PostUrlLists,'mark')
         return PostUrlLists
 
     else:
@@ -123,26 +119,69 @@ def DownloadAllthepsot(url):
     if PostUrlLists:
         PageNum = len(PostUrlLists)
         print(PageNum)
-        for pageNum in range(1,PageNum+1):
-            task = ThreadTask(PostUrlLists[pageNum])
-            Task.append(task)
-            print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
+        gap = 500
 
-        for task in Task:
-            task.setDaemon(True)
-            task.start()
-            print(time.ctime(),'thread %s start' % task)
-        for task in Task:
-            task.join()
-        while 1:
+        if PageNum < gap:
+            for pageNum in range(1,PageNum+1):
+                task = ThreadTask(PostUrlLists[pageNum])
+                Task.append(task)
+                print('-'*16,'\nThis is thread %s\n' % pageNum,'-'*16)
+
             for task in Task:
-                if task.is_alive():
-                    continue
+                task.setDaemon(True)
+                task.start()
+                print(time.ctime(),'thread %s start' % task)
+            for task in Task:
+                task.join()
+            while 1:
+                for task in Task:
+                    if task.is_alive():
+                        continue
+                    else:
+                        Task.remove(task)
+                        print(time.ctime(),'thread %s is finished' % task)
+                if len(Task) == 0:
+                    break
+
+        else:
+            Front = 1
+            Rear = Front + gap
+            PagingFile = 1
+
+            while Rear > 0 and Rear <= PageNum + 1:
+                if Rear == PageNum + 1:
+                    LAST = True
+
+                print('*' * 16, "\nThis is Paging File %s From page %s to Page %s.\n" % (PagingFile, Front, Rear-1), '*' * 16)
+                for pageNum in range(Front, Rear):
+                    task = ThreadTask(PostUrlLists[pageNum])
+                    Task.append(task)
+                    print('-' * 16, '\nThis is thread %s\n' % pageNum, '-' * 16)
+
+                for task in Task:
+                    task.setDaemon(True)
+                    task.start()
+                    print(time.ctime(), 'thread %s start' % task)
+                for task in Task:
+                    task.join()
+                while 1:
+                    for task in Task:
+                        if task.is_alive():
+                            continue
+                        else:
+                            Task.remove(task)
+                            print(time.ctime(), 'thread %s is finished' % task)
+                    if len(Task) == 0:
+                        break
+
+                Rear = PageNum - gap * PagingFile
+                if Rear > gap:
+                    Front = Front + gap
+                    Rear = Front +gap
+                    PagingFile += 1
                 else:
-                    Task.remove(task)
-                    print(time.ctime(),'thread %s is finished' % task)
-            if len(Task) == 0:
-                break
+                    Front = Front +gap
+                    Rear = PageNum + 1
 
 def Main_Post_URLDiscrimination(url):
     post_reg = r'(.*?/post/.*?/*.*)'
@@ -166,8 +205,9 @@ if __name__ == '__main__':
         Author:  Sparrow
         Purpose: downloading images and videos from any Tumblr once.
         Created: 2017-1.6
-        Version: 5.1
+        Version: 6.1
         Manual: https://github.com/sparrow629/Tumblr_Crawler
+        署名-非商业使用-禁止演绎 (by-nc-nd)：
         ''')
         URL = input('Input url: ')
         if re.match(reg,URL):
@@ -185,5 +225,3 @@ if __name__ == '__main__':
         else:
             print('Input wrong format.')
         select = input("Do you want to Quit? [Y/N]")
-
-

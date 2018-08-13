@@ -8,8 +8,10 @@
 import re
 import urllib.request
 import time
+from urllib.parse import quote
 
 def getHtml(url):
+    url = quote(url, safe='/:?=')
     try:
         page = urllib.request.urlopen(url)
         html = page.read().decode('utf-8')
@@ -41,19 +43,8 @@ def findAllPage(url):
     PageList = {1:archiveURL}
     PageNum = 1
     findNextpage(archiveURL, archiveURL, PageList, PageNum)
-    print(len(PageList),PageList)
+    print('There is %s pages.' % len(PageList))
     return PageList
-
-def reCodeURL(url):
-    reg = '(.*?/post/.*)/.*'
-    urlre = re.compile(reg)
-    try:
-        newnurl = re.findall(urlre, url)[0]
-        print(url,'=>',newnurl)
-        return newnurl
-    except:
-        print(url,'=>')
-        return url
 
 def FindCurrentPagePostUrl(url):
     html = getHtml(url)
@@ -64,8 +55,8 @@ def FindCurrentPagePostUrl(url):
     if PostUrlString:
         PostUrl = []
         for url in PostUrlString:
-            Url = reCodeURL(url)
-            PostUrl.append(Url)
+            url = url.encode('gbk','ignore').decode('gbk')
+            PostUrl.append(url)
         # print(PostUrl)
         return PostUrl
     else:
@@ -81,11 +72,18 @@ def findalltheposturl(url):
             Posturl = FindCurrentPagePostUrl(PageList[page])
             if Posturl:
                 PostUrlLists[page] = Posturl
-                print(page,PostUrlLists[page],sep=' ')
+                try:
+                    print(page,PostUrlLists[page],sep=' ')
+                except:
+                    num = len(PostUrlLists[page])
+                    for i in range(num):
+                        url = PostUrlLists[page][i]
+                        PostUrlLists[page][i] = url.encode('gbk', 'ignore').decode('gbk')
+
             else:
                 print("There is no post in page %s!" % page)
 
-        print(PostUrlLists,'mark')
+        # print(PostUrlLists,'mark')
         return PostUrlLists
 
     else:
@@ -103,4 +101,4 @@ if __name__ == '__main__':
         end = time.time()
         print(start, end, '=> Cost %ss' % (end - start))
 
-        select = input("Do you want to Quit? [Y/N]")
+        select = input(" Do you want to Quit? [Y/N]")

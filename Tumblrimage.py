@@ -8,17 +8,20 @@ import re
 import urllib.request
 import os
 import traceback
+from urllib.parse import quote
+import ExceptionOptions
 
 
 def getHtml(url):
-    try:
-        page = urllib.request.urlopen(url)
-        html = page.read().decode('utf-8')
-        return html
-    except:
-        # traceback.print_exc()
-        print('The URL you requested could not be found in Module image')
-        return 'Html'
+	url = quote(url, safe='/:?=')
+	try:
+		page = urllib.request.urlopen(url)
+		html = page.read().decode('utf-8')
+		return html
+	except:
+		# traceback.print_exc()
+		print('The URL you requested could not be found in Module image')
+		return 'Html'
 
 def getPostname(posturl):
 	reg = r'https*://.*?\/post\/(.*)'
@@ -41,8 +44,11 @@ def getImg(url):
 
 	if imglist:
 		PrePostname = getPostname(url)
-		if len(PrePostname) > 12:
-			Postname = PrePostname[:12]
+		txt = re.search('/', PrePostname)
+		if txt:
+			Postnames = PrePostname.split('/')
+			Postname =Postnames[0]
+			# print(PrePostname,Postnames)
 		else:
 			Postname = PrePostname
 		print(len(imglist))
@@ -58,7 +64,7 @@ def getImg(url):
 
 			target = path + '%s.%s' % (Name,Postfix)
 			i += 1
-			print("Downloading %s " % target)
+			print("Downloading %s \n" % target)
 			try:
 				urllib.request.urlretrieve(imgurl, target)
 			except:
@@ -66,7 +72,8 @@ def getImg(url):
 		return True
 
 	else:
-		print('There is no image!')
+		ExceptionOptions.ImgDownloadException(url)
+		# print('There is no image!')
 		return False
 
 if __name__ == '__main__':
